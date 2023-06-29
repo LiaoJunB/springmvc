@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>carousel模块快速使用</title>
+    <link rel="stylesheet" href="../layui/css/layui.css">
+    <script src="../layui/layui.js"></script>
+</head>
+<body>
+
+<div class="layui-carousel" id="test1" lay-filter="test1">
+    <div carousel-item="">
+        <div><img style="width: 100%;height: 500px" src="../images/GK-bg1.jpg"></div>
+        <div><img style="width: 100%;height: 500px" src="../images/GK-bg.jpg"></div>
+        <div><img style="width: 100%;height: 500px" src="../images/lb2.jpg"></div>
+        <div><img style="width: 100%;height: 500px" src="../images/lb5.jpeg"></div>
+        <div><img style="width: 100%;height: 500px" src="../images/GK-bg3.jpg"></div>
+    </div>
+</div>
+</body>
+<!-- 条目中可以是任意内容，如：<img src=""> -->
+
+<script>
+    layui.use(['carousel', 'form'], function(){
+        var carousel = layui.carousel
+            ,form = layui.form;
+
+        //常规轮播
+        carousel.render({
+            elem: '#test1',
+            interval:1800
+            ,width: "100%"
+            ,height:"500px"
+        });
+
+
+        //事件
+        carousel.on('change(test4)', function(res){
+            console.log(res)
+        });
+
+        var $ = layui.$, active = {
+            set: function(othis){
+                var THIS = 'layui-bg-normal'
+                    ,key = othis.data('key')
+                    ,options = {};
+
+                othis.css('background-color', '#5FB878').siblings().removeAttr('style');
+                options[key] = othis.data('value');
+                ins3.reload(options);
+            }
+        };
+
+        //监听开关
+        form.on('switch(autoplay)', function(){
+            ins3.reload({
+                autoplay: this.checked
+            });
+        });
+
+        $('.demoSet').on('keyup', function(){
+            var value = this.value
+                ,options = {};
+            if(!/^\d+$/.test(value)) return;
+
+            options[this.name] = value;
+            ins3.reload(options);
+        });
+
+        //其它示例
+        $('.demoTest .layui-btn').on('click', function(){
+            var othis = $(this), type = othis.data('type');
+            active[type] ? active[type].call(this, othis) : '';
+        });
+    });
+</script>
+
+
+</html>
